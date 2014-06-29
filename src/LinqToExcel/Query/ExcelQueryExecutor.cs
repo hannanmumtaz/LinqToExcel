@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using Remotion.Data.Linq;
 using System.IO;
@@ -60,7 +61,7 @@ namespace LinqToExcel.Query
         /// Executes a query with a scalar result, i.e. a query that ends with a result operator such as Count, Sum, or Average.
         /// </summary>
         public T ExecuteScalar<T>(QueryModel queryModel)
-        {
+        {       
             return ExecuteSingle<T>(queryModel, false);
         }
 
@@ -193,6 +194,8 @@ namespace LinqToExcel.Query
                     results = GetRowResults(data, columns);
                 else if (queryModel.MainFromClause.ItemType == typeof(RowNoHeader))
                     results = GetRowNoHeaderResults(data);
+                else if (queryModel.MainFromClause.ItemType == typeof(ExpandoObject))
+                    results = GetTypeResultsForDynamic(data, columns, queryModel);
                 else
                     results = GetTypeResults(data, columns, queryModel);
             }
@@ -304,6 +307,24 @@ namespace LinqToExcel.Query
                         value = TrimStringValue(value);
                         result.SetProperty(prop.Name, value);
                     }
+                }
+                results.Add(result);
+            }
+            return results.AsEnumerable();
+        }
+
+        private IEnumerable<dynamic> GetTypeResultsForDynamic(IDataReader data, IEnumerable<string> columns, QueryModel queryModel)
+        {
+            var results = new List<dynamic>();
+
+            while (data.Read())
+            {
+                dynamic result = new ExpandoObject();
+                var resultDictionary = (IDictionary<string, object>) result;
+                foreach (var column in columns)
+                {
+                    var value = GetColumnValue(data, column, column).Cast(typeof(String));
+                    resultDictionary.Add(column.Replace(" ", string.Empty), value);
                 }
                 results.Add(result);
             }
