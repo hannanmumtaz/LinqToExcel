@@ -136,7 +136,12 @@ namespace LinqToExcel.Query
 
         internal static bool IsTable(DataRow row)
         {
-            return row["TABLE_NAME"].ToString().Contains("$");
+            return row["TABLE_NAME"].ToString().EndsWith("$") || row["TABLE_NAME"].ToString().EndsWith("$'");
+        }
+
+        internal static bool IsNamedRange(DataRow row)
+        {
+            return row["TABLE_NAME"].ToString().Contains("$") && !row["TABLE_NAME"].ToString().EndsWith("$") && !row["TABLE_NAME"].ToString().EndsWith("$'");
         }
 
         internal static bool IsNotBuiltinTable(string tableName)
@@ -148,6 +153,15 @@ namespace LinqToExcel.Query
         {
             var args = new ExcelQueryArgs();
             args.WorksheetName = worksheetName;
+            args.FileName = fileName;
+            return GetColumnNames(args);
+        }
+
+        internal static IEnumerable<string> GetColumnNames(string worksheetName, string namedRange, string fileName)
+        {
+            var args = new ExcelQueryArgs();
+            args.WorksheetName = worksheetName;
+            args.NamedRangeName = namedRange;
             args.FileName = fileName;
             return GetColumnNames(args);
         }
@@ -204,5 +218,52 @@ namespace LinqToExcel.Query
         {
             return (IntPtr.Size == 8);
         }
+
+        internal static IEnumerable<string> GetNamedRanges(string fileName, string worksheetName)
+        {
+            return GetNamedRanges(fileName, worksheetName, new ExcelQueryArgs());
+        }
+
+        internal static IEnumerable<string> GetNamedRanges(string fileName, string worksheetName, ExcelQueryArgs args)
+        {
+            args.FileName = fileName;
+            args.WorksheetName = worksheetName;
+            args.ReadOnly = true;
+            return GetNamedRanges(args);
+        }
+
+        internal static IEnumerable<string> GetNamedRanges(ExcelQueryArgs args)
+        {
+            var worksheetNames = new List<string>();
+
+            var conn = GetConnection(args);
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                    conn.Open();
+
+                var excelTables = conn.GetOleDbSchemaTable(
+                    OleDbSchemaGuid.Tables,
+                    new Object[] { null, null, null, "TABLE" });
+
+                worksheetNames.AddRange(
+                    from DataRow row in excelTables.Rows
+                    where IsNamedRange(row) && row["TABLE_NAME"].ToString().StartsWith(args.WorksheetName)
+                    let tableName = row["TABLE_NAME"].ToString()
+                        .Replace("''", "'")
+                    where IsNotBuiltinTable(tableName)
+                    select tableName.Split('$').Last());
+
+                excelTables.Dispose();
+            }
+            finally
+            {
+                if (!args.UsePersistentConnection)
+                    conn.Dispose();
+            }
+
+            return worksheetNames;
+        }
+
     }
 }

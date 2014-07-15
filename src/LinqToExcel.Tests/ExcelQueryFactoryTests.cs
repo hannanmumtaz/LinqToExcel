@@ -101,7 +101,7 @@ namespace UnitTestProject1
                 string.Join(", ", worksheetNames.ToArray()));
         }
 
-        //[Test] This test is no longer passing. I believe it has something to do with my computer settings
+        [Test] //This test is no longer passing. I believe it has something to do with my computer settings
         public void GetWorksheetNames_does_not_include_named_ranges()
         {
             var excel = new ExcelQueryFactory(_excelFileWithNamedRanges);
@@ -109,6 +109,26 @@ namespace UnitTestProject1
             Assert.AreEqual(
                 "Tabelle1, Tabelle3, WS2",
                 string.Join(", ", worksheetNames.ToArray()));
+        }
+
+        [Test]
+        public void GetNamedRanges()
+        {
+            var excel = new ExcelQueryFactory(_excelFileWithNamedRanges);
+            var namedRanges = excel.GetNamedRanges(excel.GetWorksheetNames().First());
+            Assert.AreEqual(
+                "NameCell",
+                string.Join(", ", namedRanges.ToArray()));
+        }
+
+        [Test]
+        public void GetNamedRangeValue()
+        {
+            var excel = new ExcelQueryFactory(_excelFileWithNamedRanges);
+            var firstCellValue = excel.NamedRangeNoHeader("Tabelle1", "NameCell").First().First().Value;
+            Assert.AreEqual(
+                "NameCell",
+                firstCellValue);
         }
 
         [Test]
