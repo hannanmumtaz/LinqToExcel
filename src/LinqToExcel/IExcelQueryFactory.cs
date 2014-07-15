@@ -267,24 +267,6 @@ namespace LinqToExcel
         IEnumerable<string> GetWorksheetNames();
 
         /// <summary>
-        /// Returns a list of workbook-scope named ranges that the spreadsheet contains
-        /// </summary>
-        IEnumerable<string> GetNamedRanges();
-
-        /// <summary>
-        /// Returns a list of worksheet-scope named ranges that the worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Name of the worksheet</param>
-        IEnumerable<string> GetNamedRanges(string worksheetName);
-
-        /// <summary>
-        /// Returns a list of columns names that a named range contains
-        /// </summary>
-        /// <param name="worksheetName">Worksheet name to get the list of column names from</param>
-        /// <param name="namedRangeName">Named Range name to get the list of column names from</param>
-        IEnumerable<string> GetColumnNames(string worksheetName, string namedRangeName);
-
-        /// <summary>
         /// Returns a list of columns names that a worksheet contains
         /// </summary>
         /// <param name="worksheetName">Worksheet name to get the list of column names from</param>
