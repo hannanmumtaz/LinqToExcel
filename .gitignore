@@ -8,3 +8,4 @@ LinqToExcel.xml
 *ReSharper*
 *.zip
 *.nupkg
+src/packages/
