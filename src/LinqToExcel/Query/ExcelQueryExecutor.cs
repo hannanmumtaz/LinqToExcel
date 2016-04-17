@@ -40,7 +40,6 @@ namespace LinqToExcel.Query
 
             if (args.FileName == null)
                 throw new ArgumentNullException("FileName", "FileName property cannot be null.");
-
             if (!String.IsNullOrEmpty(args.StartRange) &&
                 !Regex.Match(args.StartRange, "^[a-zA-Z]{1,3}[0-9]{1,7}$").Success)
                 throw new ArgumentException(string.Format(
@@ -175,7 +174,12 @@ namespace LinqToExcel.Query
 
 	            command.CommandText = sql.ToString();
                 command.Parameters.AddRange(sql.Parameters.ToArray());
-                try { data = command.ExecuteReader(); }
+                try
+                {
+                    data = command.ExecuteReader();
+                    
+                    
+                }
                 catch (OleDbException e)
                 {
                     if (e.Message.Contains(_args.WorksheetName))
@@ -195,7 +199,8 @@ namespace LinqToExcel.Query
                 else if (queryModel.MainFromClause.ItemType == typeof(RowNoHeader))
                     results = GetRowNoHeaderResults(data);
                 else if (queryModel.MainFromClause.ItemType == typeof(ExpandoObject))
-                    results = GetTypeResultsForDynamic(data, columns, queryModel);
+
+                    results = GetMappedTypeResultsForDynamic(data, columns, queryModel,_args.Skiprows);
                 else
                     results = GetTypeResults(data, columns, queryModel);
             }
@@ -221,7 +226,7 @@ namespace LinqToExcel.Query
         {
             foreach (var kvp in _args.ColumnMappings)
             {
-                if (!columns.Contains(kvp.Value))
+                if (!columns.Contains(kvp.Key))
                 {
                     _log.WarnFormat("'{0}' column that is mapped to the '{1}' property does not exist in the '{2}' worksheet",
                         kvp.Value, kvp.Key, _args.WorksheetName);
@@ -313,12 +318,67 @@ namespace LinqToExcel.Query
             return results.AsEnumerable();
         }
 
-        private IEnumerable<dynamic> GetTypeResultsForDynamic(IDataReader data, IEnumerable<string> columns, QueryModel queryModel)
+
+        private IEnumerable<dynamic> GetMappedTypeResultsForDynamic(IDataReader data, IEnumerable<string> columns, QueryModel queryModel, int skiprows)
         {
             var results = new List<dynamic>();
+            
+
+            for (int i = 1; i == skiprows; i++)
+            {
+                if (data.Read())
+                {
+                    _log.Info($"Skipped row {i} from the sheet");
+                }
+                else
+                {
+                    _log.Error($"Data Not Read , row no : {i} will not be skipped needs serious attention.");
+                }
+
+
+            }
 
             while (data.Read())
             {
+
+                dynamic result = new ExpandoObject();
+                var resultDictionary = (IDictionary<string, object>)result;
+                foreach (var column in columns)
+                {
+                    var columnName = (_args.ColumnMappings.ContainsKey(column.ToString().ToLower().Trim())) ?
+                       _args.ColumnMappings[column.ToString().ToLower().Trim()] :
+                       column.ToString();
+    
+                        var value = GetColumnValue(data, column, column).Cast(typeof(String));
+                        resultDictionary.Add(columnName.Replace(" ", string.Empty), value);
+                    
+                }
+                results.Add(result);
+            }
+            return results.AsEnumerable();
+        }
+
+        private IEnumerable<dynamic> GetTypeResultsForDynamic(IDataReader data, IEnumerable<string> columns, QueryModel queryModel,int skiprows)
+        {
+            var results = new List<dynamic>();
+
+            for (int i = 1; i == skiprows; i++)
+            {
+                if (data.Read())
+                {
+                    _log.Info($"Skipped row {i} from the sheet");
+                }
+                else
+                {
+                    _log.Error($"Data Not Read , row no : {i} will not be skipped needs serious attention.");
+                }
+                       
+                
+            }
+
+            while (data.Read())
+            {
+
                 dynamic result = new ExpandoObject();
                 var resultDictionary = (IDictionary<string, object>) result;
                 foreach (var column in columns)
@@ -330,6 +390,7 @@ namespace LinqToExcel.Query
             }
             return results.AsEnumerable();
         }
+
 
         /// <summary>
         /// Trims leading and trailing spaces, based on the value of _args.TrimSpaces

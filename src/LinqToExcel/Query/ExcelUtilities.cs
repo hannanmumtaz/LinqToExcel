@@ -98,35 +98,39 @@ namespace LinqToExcel.Query
         internal static IEnumerable<string> GetWorksheetNames(ExcelQueryArgs args)
         {
             var worksheetNames = new List<string>();
-
-	        var conn = GetConnection(args);
-            try
+            if (args.FileName.ToLower().EndsWith(".csv"))
             {
-                if (conn.State == ConnectionState.Closed)
-                    conn.Open();
-
-                var excelTables = conn.GetOleDbSchemaTable(
-                    OleDbSchemaGuid.Tables,
-                    new Object[] { null, null, null, "TABLE" });
-
-                worksheetNames.AddRange(
-                    from DataRow row in excelTables.Rows
-                    where IsTable(row)
-                    let tableName = row["TABLE_NAME"].ToString()
-                        .Replace("$", "")
-                        .RegexReplace("(^'|'$)", "")
-                        .Replace("''", "'")
-                    where IsNotBuiltinTable(tableName)
-                    select tableName);
-
-                excelTables.Dispose();
+                worksheetNames.Add(Path.GetFileName(args.FileName));
             }
-            finally
-            {
-                if (!args.UsePersistentConnection)
-                    conn.Dispose();
+            else {
+                var conn = GetConnection(args);
+                try
+                {
+                    if (conn.State == ConnectionState.Closed)
+                        conn.Open();
+
+                    var excelTables = conn.GetOleDbSchemaTable(
+                        OleDbSchemaGuid.Tables,
+                        new Object[] { null, null, null, "TABLE" });
+
+                    worksheetNames.AddRange(
+                        from DataRow row in excelTables.Rows
+                        where IsTable(row)
+                        let tableName = row["TABLE_NAME"].ToString()
+                            .Replace("$", "")
+                            .RegexReplace("(^'|'$)", "")
+                            .Replace("''", "'")
+                        where IsNotBuiltinTable(tableName)
+                        select tableName);
+
+                    excelTables.Dispose();
+                }
+                finally
+                {
+                    if (!args.UsePersistentConnection)
+                        conn.Dispose();
+                }
             }
-			
             return worksheetNames;
         }
 
@@ -159,7 +163,14 @@ namespace LinqToExcel.Query
 
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = string.Format("SELECT TOP 1 * FROM [{0}$]", args.WorksheetName);
+                    if (args.FileName.ToLower().Contains(".csv"))
+                    {
+                        command.CommandText = string.Format("SELECT TOP 1 * FROM [{0}]", args.WorksheetName);
+                    }
+                    else
+                    {
+                        command.CommandText = string.Format("SELECT TOP 1 * FROM [{0}$] ", args.WorksheetName);
+                    }
                     var data = command.ExecuteReader();
                     columns.AddRange(GetColumnNames(data));
                 }
@@ -175,6 +186,7 @@ namespace LinqToExcel.Query
 
         internal static IEnumerable<string> GetColumnNames(IDataReader data)
         {
+            
             var columns = new List<string>();
             var sheetSchema = data.GetSchemaTable();
             foreach (DataRow row in sheetSchema.Rows)

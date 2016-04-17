@@ -57,6 +57,7 @@ namespace LinqToExcel.Query
             SqlStatement.Parameters = where.Params;
             SqlStatement.ColumnNamesUsed.AddRange(where.ColumnNamesUsed);
 
+
             base.VisitWhereClause(whereClause, queryModel, index);
         }
 
@@ -71,9 +72,15 @@ namespace LinqToExcel.Query
             else if (resultOperator is AverageResultOperator)
                 UpdateAggregate(queryModel, "AVG");
             else if (resultOperator is CountResultOperator)
+            {
                 SqlStatement.Aggregate = "COUNT(*)";
+                SqlStatement.SkipRowsInCount = _args.Skiprows;
+            }
             else if (resultOperator is LongCountResultOperator)
-                SqlStatement.Aggregate = "COUNT(*)";
+            {   SqlStatement.Aggregate = "COUNT(*)";
+                SqlStatement.SkipRowsInCount = _args.Skiprows;
+            }
+
             else if (resultOperator is FirstResultOperator)
                 SqlStatement.Aggregate = "TOP 1 *";
             else if (resultOperator is MaxResultOperator)

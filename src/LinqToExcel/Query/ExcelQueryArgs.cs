@@ -23,6 +23,7 @@ namespace LinqToExcel.Query
         internal bool UsePersistentConnection { get; set; }
 		internal OleDbConnection PersistentConnection { get; set; }
         internal TrimSpacesType TrimSpaces { get; set; }
+        internal int Skiprows { get; set; }
 
         internal ExcelQueryArgs()
             : this(new ExcelQueryConstructorArgs() { DatabaseEngine = ExcelUtilities.DefaultDatabaseEngine() })
@@ -38,6 +39,7 @@ namespace LinqToExcel.Query
             UsePersistentConnection = args.UsePersistentConnection;
             TrimSpaces = args.TrimSpaces;
             ReadOnly = args.ReadOnly;
+            Skiprows = args.skiprows;
         }
 
         public override string ToString()

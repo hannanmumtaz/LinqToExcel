@@ -38,6 +38,8 @@ namespace LinqToExcel
         /// </summary>
         public bool ReadOnly { get; set; }
 
+        public int skiprows { get; set; }
+
         /// <summary>
         /// Sets the database engine to use 
         /// (Spreadsheets ending in xlsx, xlsm, and xlsb must use the Ace database engine)
@@ -74,6 +76,16 @@ namespace LinqToExcel
         public void AddMapping<TSheetData>(Expression<Func<TSheetData, object>> property, string column)
         {
             AddMapping(GetPropertyName(property), column);
+        }
+
+
+        public void AddMapping(IDictionary<string,string> ColumnMap)
+        {
+            foreach (KeyValuePair<string, string> column in ColumnMap)
+            {
+                _columnMappings[column.Value.ToString().Trim().ToLower()] = column.Key;
+            }
+
         }
 
         /// <summary>
@@ -162,7 +174,9 @@ namespace LinqToExcel
                 Transformations = _transformations,
 				UsePersistentConnection = UsePersistentConnection,
                 TrimSpaces = TrimSpaces,
-                ReadOnly = ReadOnly
+                ReadOnly = ReadOnly,
+                skiprows = skiprows
+
             };
         }
 
@@ -176,8 +190,16 @@ namespace LinqToExcel
         /// <typeparam name="TSheetData">Class type to return row data as</typeparam>
         public ExcelQueryable<TSheetData> Worksheet<TSheetData>()
         {
-            return new ExcelQueryable<TSheetData>(PersistQueryArgs(
-                new ExcelQueryArgs(GetConstructorArgs())));
+            return new ExcelQueryable<TSheetData>(
+                PersistQueryArgs( new ExcelQueryArgs(GetConstructorArgs())));
+        }
+
+
+        public ExcelQueryable<TSheetData> WorksheetSkipRows<TSheetData>(int skiptoprows)
+        {
+            return new ExcelQueryable<TSheetData>(
+                PersistQueryArgs(new ExcelQueryArgs(GetConstructorArgs())
+                { Skiprows = skiptoprows }));
         }
 
         /// <summary>
@@ -194,6 +216,17 @@ namespace LinqToExcel
         /// </summary>
         /// <typeparam name="TSheetData">Class type to return row data as</typeparam>
         /// <param name="worksheetName">Name of the worksheet</param>
+        public ExcelQueryable<TSheetData> WorksheetSkipRows<TSheetData>(string worksheetName, int skiptoprows)
+        {
+            return new ExcelQueryable<TSheetData>(PersistQueryArgs(
+                new ExcelQueryArgs(GetConstructorArgs())
+                {
+                    WorksheetName = worksheetName,
+                    Skiprows = skiptoprows
+                   
+                }));
+        }
+
         public ExcelQueryable<TSheetData> Worksheet<TSheetData>(string worksheetName)
         {
             return new ExcelQueryable<TSheetData>(PersistQueryArgs(
@@ -208,12 +241,24 @@ namespace LinqToExcel
         /// </summary>
         /// <typeparam name="TSheetData">Class type to return row data as</typeparam>
         /// <param name="worksheetIndex">Worksheet index ordered by name, not position in the workbook</param>
+        public ExcelQueryable<TSheetData> WorksheetSkipRows<TSheetData>(int worksheetIndex,int skiptoprows)
+        {
+            return new ExcelQueryable<TSheetData>(PersistQueryArgs(
+                new ExcelQueryArgs(GetConstructorArgs())
+                {
+                    WorksheetIndex = worksheetIndex,
+                    Skiprows = skiptoprows
+                    
+                }));
+        }
+
         public ExcelQueryable<TSheetData> Worksheet<TSheetData>(int worksheetIndex)
         {
             return new ExcelQueryable<TSheetData>(PersistQueryArgs(
                 new ExcelQueryArgs(GetConstructorArgs())
                 {
                     WorksheetIndex = worksheetIndex
+
                 }));
         }
 

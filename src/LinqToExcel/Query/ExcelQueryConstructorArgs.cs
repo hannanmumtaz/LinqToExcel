@@ -17,5 +17,6 @@ namespace LinqToExcel.Query
 		internal bool UsePersistentConnection { get; set; }
         internal TrimSpacesType TrimSpaces { get; set; }
         internal bool ReadOnly { get; set; }
+        public int skiprows { get; set; }
     }
 }

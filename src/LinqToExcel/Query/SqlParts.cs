@@ -14,6 +14,8 @@ namespace LinqToExcel.Query
         public string OrderBy { get; set; }
         public bool OrderByAsc { get; set; }
         public List<string> ColumnNamesUsed { get; set; }
+        public int SkipRowsInCount { get; set; }
+
 
         public SqlParts()
         {
@@ -31,9 +33,19 @@ namespace LinqToExcel.Query
         public override string ToString()
         {
             var sql = new StringBuilder();
-            sql.AppendFormat("SELECT {0} FROM {1}",
+
+            if (SkipRowsInCount > 0)
+            {
+                sql.AppendFormat("SELECT {0} - {2} FROM {1}",
                 Aggregate,
-                Table);
+                Table,SkipRowsInCount);
+            }
+            else
+            {
+                sql.AppendFormat("SELECT {0} FROM {1}",
+                    Aggregate,
+                    Table);
+            }
             if (!String.IsNullOrEmpty(Where))
                 sql.AppendFormat(" WHERE {0}", Where);
             if (!String.IsNullOrEmpty(OrderBy))
