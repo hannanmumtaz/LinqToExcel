@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Remotion.Data.Linq;
+using Remotion.Linq;
 using System.Linq.Expressions;
 using LinqToExcel.Attributes;
 using System;
+using Remotion.Linq.Parsing.Structure;
 
 namespace LinqToExcel.Query
 {
@@ -16,7 +17,7 @@ namespace LinqToExcel.Query
 
         // This constructor is called by users, create a new IQueryExecutor.
         internal ExcelQueryable(ExcelQueryArgs args)
-            : base(CreateExecutor(args))
+            : base(QueryParser.CreateDefault(),CreateExecutor(args))
         {
             foreach (var property in typeof(T).GetProperties())
             {

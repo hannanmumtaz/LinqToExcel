@@ -7,7 +7,7 @@ using LinqToExcel.Domain;
 
 namespace LinqToExcel.Query
 {
-    internal class ExcelQueryArgs
+    internal class ExcelQueryArgs 
     {
         internal string FileName { get; set; }
         internal DatabaseEngine DatabaseEngine { get; set; }

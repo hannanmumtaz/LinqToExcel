@@ -34,7 +34,7 @@ namespace LinqToExcel.Query
         {
             var sql = new StringBuilder();
 
-            if (SkipRowsInCount > 0)
+            if (SkipRowsInCount > 0 && Aggregate == "COUNT(*)")
             {
                 sql.AppendFormat("SELECT {0} - {2} FROM {1}",
                 Aggregate,

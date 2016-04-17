@@ -72,12 +72,8 @@
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Remotion, Version=1.17.6.10000, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Remotion.1.17.6-rtm\lib\net45\Remotion.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Remotion.Data.Linq, Version=1.13.52.2, Culture=neutral, PublicKeyToken=8c59a1bf3e8d42c1, processorArchitecture=MSIL">
-      <HintPath>..\packages\Remotion.Data.Linq.1.0.0\lib\NET40\Remotion.Data.Linq.dll</HintPath>
+    <Reference Include="Remotion.Linq, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.2.0.2\lib\net45\Remotion.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
