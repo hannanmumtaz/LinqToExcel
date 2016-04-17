@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LinqToExcel.Tests</RootNamespace>
     <AssemblyName>LinqToExcel.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -52,28 +52,23 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.4\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MbUnit.Framework, Version=2.41.232.0, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MbUnit.Framework">
       <HintPath>..\..\lib\MbUnit\MbUnit.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Remotion.Linq, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Remotion.Linq.2.0.2\lib\net45\Remotion.Linq.dll</HintPath>
+      <HintPath>..\packages\Remotion.Linq.2.0.2\lib\net40\Remotion.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions">
@@ -83,69 +78,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CellTest.cs" />
-    <Compile Include="ColumnMappings_IntegrationTests.cs" />
-    <Compile Include="ColumnMappings_SQLStatements_UnitTests.cs" />
-    <Compile Include="CompanyNullable.cs" />
-    <Compile Include="CompanyWithColumnAnnotations.cs" />
-    <Compile Include="CompanyWithCity.cs" />
-    <Compile Include="ConfiguredWorksheetName_SQLStatements_UnitTests.cs" />
-    <Compile Include="ConfiguredWorksheetName_IntegrationTests.cs" />
-    <Compile Include="Convention_SQLStatements_UnitTests.cs" />
-    <Compile Include="Company.cs" />
-    <Compile Include="Convention_IntegrationTests.cs" />
-    <Compile Include="CSV_IntegrationTests.cs" />
-    <Compile Include="CSV_SQLStatements_UnitTests.cs" />
-    <Compile Include="ConnectionString_UnitTests.cs" />
-    <Compile Include="Excel2007_IntegrationTests.cs" />
-    <Compile Include="ExcelQueryFactoryTests.cs" />
-    <Compile Include="PersistentConnection_IntegrationTests.cs" />
-    <Compile Include="NoHeader_IntregrationTests.cs" />
-    <Compile Include="NoHeader_SQLStatements_UnitTests.cs" />
-    <Compile Include="Range_IntegrationTests.cs" />
-    <Compile Include="Range_SQLStatements_UnitTests.cs" />
-    <Compile Include="IMEX_Tests.cs" />
-    <Compile Include="InvalidColumnNamesUsed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RowTest.cs" />
-    <Compile Include="Row_IntegrationTests.cs" />
-    <Compile Include="Row_SQLStatement_UnitTests.cs" />
-    <Compile Include="SQLLogStatements_Helper.cs" />
-    <Compile Include="UnSupportedMethods.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LinqToExcel\LinqToExcel.csproj">
-      <Project>{08F80D96-5387-4406-B88B-DCC0CB661702}</Project>
-      <Name>LinqToExcel</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ExcelFiles\Companies.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="ExcelFiles\Companies.xls">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="ExcelFiles\Companies.xlsb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="ExcelFiles\Companies.xlsm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="ExcelFiles\Companies.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="ExcelFiles\NamedRanges.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="ExcelFiles\NoHeader.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="ExcelFiles\NoHeader.xls">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -163,6 +99,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LinqToExcel\LinqToExcel.csproj">
+      <Project>{08f80d96-5387-4406-b88b-dcc0cb661702}</Project>
+      <Name>LinqToExcel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

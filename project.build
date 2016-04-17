@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <project name="LinqToExcel" default="build">
-	<property name="nant.settings.currentframework" value="net-3.5" />
+	<property name="nant.settings.currentframework" value="net-4.0" />
 
 	<property name="dir.base" value="${directory::get-current-directory()}" />
 	<property name="dir.bin" value="${dir.base}\bin" />

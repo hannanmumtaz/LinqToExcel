@@ -8,7 +8,6 @@ using System.Data.OleDb;
 using System.Data;
 using System.Reflection;
 using Remotion.Linq.Clauses.ResultOperators;
-using System.Collections;
 using LinqToExcel.Extensions;
 using log4net;
 using System.Text.RegularExpressions;
