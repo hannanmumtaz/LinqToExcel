@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToExcel", "LinqToExcel\LinqToExcel.csproj", "{08F80D96-5387-4406-B88B-DCC0CB661702}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToExcel.tests", "LinqToExcel.tests\LinqToExcel.tests.csproj", "{350B7CE8-CFBE-4997-A1C6-61E3D9DDBBC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToExcel.tests", "LinqToExcel.Unittests\LinqToExcel.Unittests.csproj", "{350B7CE8-CFBE-4997-A1C6-61E3D9DDBBC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
