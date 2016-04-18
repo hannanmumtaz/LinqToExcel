@@ -16,6 +16,7 @@ namespace LinqToExcel.Query
         internal Dictionary<string, string> ColumnMappings { get; set; }
         internal Dictionary<string, Func<string, object>> Transformations { get; private set; }
         internal Dictionary<string, dynamic> ManyToOneTransformations { get; set; }
+        internal string NamedRangeName { get; set; }
         internal string StartRange { get; set; }
         internal string EndRange { get; set; }
         internal bool NoHeader { get; set; }
