@@ -12,6 +12,7 @@ using LinqToExcel.Extensions;
 using log4net;
 using System.Text.RegularExpressions;
 using System.Text;
+using log4net.Util;
 using LinqToExcel.Domain;
 
 namespace LinqToExcel.Query
@@ -152,8 +153,8 @@ namespace LinqToExcel.Query
             }
             else if (String.IsNullOrEmpty(_args.WorksheetName) && String.IsNullOrEmpty(_args.NamedRangeName))
             {
+            else if (String.IsNullOrEmpty(_args.WorksheetName))
                 _args.WorksheetName = "Sheet1";
-            }
         }
 
         /// <summary>
@@ -452,9 +453,18 @@ namespace LinqToExcel.Query
         private object GetColumnValue(IDataRecord data, string columnName, string propertyName)
         {
             //Perform the property transformation if there is one
-            return (_args.Transformations.ContainsKey(propertyName)) ?
-                _args.Transformations[propertyName](data[columnName].ToString()) :
-                data[columnName];
+            object result;
+                 result = (_args.Transformations.ContainsKey(propertyName)) ?
+                _args.Transformations[propertyName](data[columnName].ToString()) : data[columnName];
+
+                result = (_args.ManyToOneTransformations.ContainsKey(data[columnName].ToString())) ?
+                _args.ManyToOneTransformations[data[columnName].ToString()] : data[columnName];
+
+            
+            return result;
+            //incase a dictionary is provided perform dictionary transformation
+
+
         }
 
         private IEnumerable<object> GetScalarResults(IDataReader data)

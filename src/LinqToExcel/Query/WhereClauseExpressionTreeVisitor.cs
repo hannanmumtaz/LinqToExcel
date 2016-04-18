@@ -5,6 +5,7 @@ using System.Text;
 using Remotion.Linq.Parsing;
 using System.Data.OleDb;
 using System.Linq.Expressions;
+using LinqToExcel.Domain;
 using LinqToExcel.Extensions;
 using Remotion.Linq.Clauses.ExpressionVisitors;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using LinqToExcel.Extensions;
 
-namespace LinqToExcel
+namespace LinqToExcel.Domain
 {
     public class Row : List<Cell>
     {

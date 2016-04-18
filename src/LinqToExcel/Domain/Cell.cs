@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LinqToExcel
+namespace LinqToExcel.Domain
 {
     /// <summary>
     /// Represents a cell and its value in an excel spreadsheet

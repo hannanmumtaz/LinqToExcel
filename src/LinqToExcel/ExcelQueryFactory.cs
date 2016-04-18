@@ -12,8 +12,9 @@ namespace LinqToExcel
 {
     public class ExcelQueryFactory : IExcelQueryFactory
     {
-        private readonly Dictionary<string, string> _columnMappings = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _columnMappings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, Func<string, object>> _transformations = new Dictionary<string, Func<string, object>>();
+        private readonly Dictionary<string, dynamic> _columnMappingsForDynamicTypes = new Dictionary<string, dynamic>(StringComparer.OrdinalIgnoreCase);
         private readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private ExcelQueryArgs _queryArgs;
         private bool _disposed;
@@ -39,6 +40,17 @@ namespace LinqToExcel
         public bool ReadOnly { get; set; }
 
         public int skiprows { get; set; }
+
+        /// <summary>
+        /// For all set of keys the values will be assigned to the output value.
+        /// </summary>
+        public void AddTransformationForDynamic(IDictionary<string,dynamic> keyvalueDictionary)
+        {
+            foreach (var column in keyvalueDictionary)
+            {
+                _columnMappingsForDynamicTypes[column.Key.Trim().ToLower()] = column.Value;
+            }
+        }
 
         /// <summary>
         /// Sets the database engine to use 
@@ -81,9 +93,9 @@ namespace LinqToExcel
 
         public void AddMapping(IDictionary<string,string> ColumnMap)
         {
-            foreach (KeyValuePair<string, string> column in ColumnMap)
+            foreach (var column in ColumnMap)
             {
-                _columnMappings[column.Value.ToString().Trim().ToLower()] = column.Key;
+                _columnMappings[column.Value.Trim().ToLower()] = column.Key;
             }
 
         }
@@ -152,29 +164,6 @@ namespace LinqToExcel
         }
 
         /// <summary>
-        /// Returns a list of workbook-scope named ranges that the spreadsheet contains
-        /// </summary>
-        public IEnumerable<string> GetNamedRanges()
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetNamedRanges(FileName);
-        }
-
-        /// <summary>
-        /// Returns a list of worksheet-scope named ranges that the worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Name of the worksheet</param>
-        public IEnumerable<string> GetNamedRanges(string worksheetName)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetNamedRanges(FileName, worksheetName);
-        }
-
-        /// <summary>
         /// Returns a list of columns names that a worksheet contains
         /// </summary>
         /// <param name="worksheetName">Worksheet name to get the list of column names from</param>
@@ -184,19 +173,6 @@ namespace LinqToExcel
                 throw new NullReferenceException("FileName property is not set");
 
             return ExcelUtilities.GetColumnNames(worksheetName, FileName);
-        }
-
-        /// <summary>
-        /// Returns a list of columns names that a worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Worksheet name to get the list of column names from</param>
-        /// <param name="namedRangeName">Named Range name to get the list of column names from</param>
-        public IEnumerable<string> GetColumnNames(string worksheetName, string namedRange)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetColumnNames(worksheetName, namedRange, FileName);
         }
 
         internal ExcelQueryConstructorArgs GetConstructorArgs()
@@ -211,7 +187,8 @@ namespace LinqToExcel
 				UsePersistentConnection = UsePersistentConnection,
                 TrimSpaces = TrimSpaces,
                 ReadOnly = ReadOnly,
-                skiprows = skiprows
+                skiprows = skiprows,
+                ManyToOneTransformations = _columnMappingsForDynamicTypes
 
             };
         }
@@ -323,6 +300,7 @@ namespace LinqToExcel
                     WorksheetIndex = worksheetIndex
                 }));
         }
+
 
         /// <summary>
         /// Enables Linq queries against an Excel worksheet

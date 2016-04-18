@@ -98,16 +98,12 @@ namespace LinqToExcel.Query
         internal static IEnumerable<string> GetWorksheetNames(ExcelQueryArgs args)
         {
             var worksheetNames = new List<string>();
-            if (args.FileName.ToLower().EndsWith(".csv"))
+         
+           var conn = GetConnection(args);
+            try
             {
-                worksheetNames.Add(Path.GetFileName(args.FileName));
-            }
-            else {
-                var conn = GetConnection(args);
-                try
-                {
-                    if (conn.State == ConnectionState.Closed)
-                        conn.Open();
+                if (conn.State == ConnectionState.Closed) 
+                    conn.Open();
 
                     var excelTables = conn.GetOleDbSchemaTable(
                         OleDbSchemaGuid.Tables,
@@ -123,6 +119,30 @@ namespace LinqToExcel.Query
                         where IsNotBuiltinTable(tableName)
                         select tableName);
 
+                if (excelTables != null)
+                {
+                    if (args.FileName.ToLower().EndsWith(".csv"))
+                    {
+                        worksheetNames.AddRange(from DataRow row in new[] { excelTables.Rows[0] }
+                                                where IsTable(row)
+                                                let tableName = row["TABLE_NAME"].ToString()
+                                                    .Replace("$", "")
+                                                    .RegexReplace("(^'|'$)", "")
+                                                    .Replace("''", "'")
+                                                where IsNotBuiltinTable(tableName)
+                                                select tableName);
+                    }
+                    else
+                    {
+                        worksheetNames.AddRange(from DataRow row in excelTables.Rows
+                                                where IsTable(row)
+                                                let tableName = row["TABLE_NAME"].ToString()
+                                                    .Replace("$", "")
+                                                    .RegexReplace("(^'|'$)", "")
+                                                    .Replace("''", "'")
+                                                where IsNotBuiltinTable(tableName)
+                                                select tableName);
+                    }
                     excelTables.Dispose();
                 }
                 finally

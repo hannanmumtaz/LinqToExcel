@@ -173,6 +173,5 @@ namespace LinqToExcel.Query
                 _args.ColumnMappings[mExp.Member.Name] :
                 mExp.Member.Name;
         }
-
     }
 }

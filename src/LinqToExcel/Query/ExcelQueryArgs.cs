@@ -15,7 +15,7 @@ namespace LinqToExcel.Query
         internal int? WorksheetIndex { get; set; }
         internal Dictionary<string, string> ColumnMappings { get; set; }
         internal Dictionary<string, Func<string, object>> Transformations { get; private set; }
-        internal string NamedRangeName { get; set; }
+        internal Dictionary<string, dynamic> ManyToOneTransformations { get; set; }
         internal string StartRange { get; set; }
         internal string EndRange { get; set; }
         internal bool NoHeader { get; set; }
@@ -41,6 +41,8 @@ namespace LinqToExcel.Query
             TrimSpaces = args.TrimSpaces;
             ReadOnly = args.ReadOnly;
             Skiprows = args.skiprows;
+            ManyToOneTransformations = args.ManyToOneTransformations;
+
         }
 
         public override string ToString()
@@ -48,10 +50,10 @@ namespace LinqToExcel.Query
             var columnMappingsString = new StringBuilder();
             foreach (var kvp in ColumnMappings)
                 columnMappingsString.AppendFormat("[{0} = '{1}'] ", kvp.Key, kvp.Value);
-            var transformationsString = string.Join(", ", Transformations.Keys.ToArray());
+            var transformationsString = string.Join(", ", Transformations.Keys.ToArray() ?? ManyToOneTransformations.Keys.ToArray());
 
-            return string.Format("FileName: '{0}'; WorksheetName: '{1}'; WorksheetIndex: {2}; StartRange: {3}; EndRange: {4}; Named Range: {11}; NoHeader: {5}; ColumnMappings: {6}; Transformations: {7}, StrictMapping: {8}, UsePersistentConnection: {9}, TrimSpaces: {10}",
-                FileName, WorksheetName, WorksheetIndex, StartRange, EndRange, NoHeader, columnMappingsString, transformationsString, StrictMapping, UsePersistentConnection, TrimSpaces, NamedRangeName);
+            return string.Format("FileName: '{0}'; WorksheetName: '{1}'; WorksheetIndex: {2}; StartRange: {3}; EndRange: {4}; NoHeader: {5}; ColumnMappings: {6}; Transformations: {7}, StrictMapping: {8}, UsePersistentConnection: {9}, TrimSpaces: {10}",
+                FileName, WorksheetName, WorksheetIndex, StartRange, EndRange, NoHeader, columnMappingsString, transformationsString, StrictMapping, UsePersistentConnection, TrimSpaces);
         }
     }
 }

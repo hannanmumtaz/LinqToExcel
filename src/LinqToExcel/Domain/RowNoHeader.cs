@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace LinqToExcel
+namespace LinqToExcel.Domain
 {
     public class RowNoHeader : List<Cell>
     {
