@@ -153,8 +153,8 @@ namespace LinqToExcel.Query
             }
             else if (String.IsNullOrEmpty(_args.WorksheetName) && String.IsNullOrEmpty(_args.NamedRangeName))
             {
-            else if (String.IsNullOrEmpty(_args.WorksheetName))
-                _args.WorksheetName = "Sheet1";
+                    _args.WorksheetName = "Sheet1";
+            }
         }
 
         /// <summary>

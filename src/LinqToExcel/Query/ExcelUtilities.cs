@@ -72,52 +72,42 @@ namespace LinqToExcel.Query
 
         internal static IEnumerable<string> GetWorksheetNames(string fileName)
         {
-	        return GetWorksheetNames(fileName, new ExcelQueryArgs());
+            return GetWorksheetNames(fileName, new ExcelQueryArgs());
         }
 
-		internal static IEnumerable<string> GetWorksheetNames(string fileName, ExcelQueryArgs args)
-		{
-			args.FileName = fileName;
+        internal static IEnumerable<string> GetWorksheetNames(string fileName, ExcelQueryArgs args)
+        {
+            args.FileName = fileName;
             args.ReadOnly = true;
-			return GetWorksheetNames(args);
-		} 
+            return GetWorksheetNames(args);
+        }
 
-		internal static OleDbConnection GetConnection(ExcelQueryArgs args)
-		{
-			if (args.UsePersistentConnection)
-			{
+        internal static OleDbConnection GetConnection(ExcelQueryArgs args)
+        {
+            if (args.UsePersistentConnection)
+            {
                 if (args.PersistentConnection == null)
                     args.PersistentConnection = new OleDbConnection(GetConnectionString(args));
 
-				return args.PersistentConnection;
-			}
+                return args.PersistentConnection;
+            }
 
             return new OleDbConnection(GetConnectionString(args));
-		}
+        }
 
         internal static IEnumerable<string> GetWorksheetNames(ExcelQueryArgs args)
         {
             var worksheetNames = new List<string>();
-         
-           var conn = GetConnection(args);
+
+            var conn = GetConnection(args);
             try
             {
-                if (conn.State == ConnectionState.Closed) 
+                if (conn.State == ConnectionState.Closed)
                     conn.Open();
 
-                    var excelTables = conn.GetOleDbSchemaTable(
-                        OleDbSchemaGuid.Tables,
-                        new Object[] { null, null, null, "TABLE" });
-
-                    worksheetNames.AddRange(
-                        from DataRow row in excelTables.Rows
-                        where IsTable(row)
-                        let tableName = row["TABLE_NAME"].ToString()
-                            .Replace("$", "")
-                            .RegexReplace("(^'|'$)", "")
-                            .Replace("''", "'")
-                        where IsNotBuiltinTable(tableName)
-                        select tableName);
+                var excelTables = conn.GetOleDbSchemaTable(
+                    OleDbSchemaGuid.Tables,
+                    new[] { null, null, null, "TABLE" });
 
                 if (excelTables != null)
                 {
@@ -145,16 +135,18 @@ namespace LinqToExcel.Query
                     }
                     excelTables.Dispose();
                 }
-                finally
-                {
-                    if (!args.UsePersistentConnection)
-                        conn.Dispose();
-                }
+
+            }
+            finally
+            {
+                if (!args.UsePersistentConnection)
+                    conn.Dispose();
             }
             return worksheetNames;
         }
+    
 
-        internal static bool IsTable(DataRow row)
+    internal static bool IsTable(DataRow row)
         {
             return row["TABLE_NAME"].ToString().EndsWith("$") || (row["TABLE_NAME"].ToString().StartsWith("'") && row["TABLE_NAME"].ToString().EndsWith("$'"));
         }

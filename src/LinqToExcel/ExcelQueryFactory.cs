@@ -163,17 +163,10 @@ namespace LinqToExcel
             return ExcelUtilities.GetWorksheetNames(FileName);
         }
 
-        /// <summary>
-        /// Returns a list of workbook-scope named ranges that the spreadsheet contains
-        /// </summary>
-        public IEnumerable<string> GetNamedRanges()
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
+       
+       
 
-            return ExcelUtilities.GetNamedRanges(FileName);
-        }
-
+       
         /// <summary>
         /// Returns a list of worksheet-scope named ranges that the worksheet contains
         /// </summary>
@@ -186,120 +179,9 @@ namespace LinqToExcel
             return ExcelUtilities.GetNamedRanges(FileName, worksheetName);
         }
 
-        /// <summary>
-        /// Returns a list of workbook-scope named ranges that the spreadsheet contains
-        /// </summary>
-        public IEnumerable<string> GetNamedRanges()
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
+       
 
-            return ExcelUtilities.GetNamedRanges(FileName);
-        }
-
-        /// <summary>
-        /// Returns a list of worksheet-scope named ranges that the worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Name of the worksheet</param>
-        public IEnumerable<string> GetNamedRanges(string worksheetName)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetNamedRanges(FileName, worksheetName);
-        }
-
-        /// <summary>
-        /// Returns a list of workbook-scope named ranges that the spreadsheet contains
-        /// </summary>
-        public IEnumerable<string> GetNamedRanges()
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetNamedRanges(FileName);
-        }
-
-        /// <summary>
-        /// Returns a list of worksheet-scope named ranges that the worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Name of the worksheet</param>
-        public IEnumerable<string> GetNamedRanges(string worksheetName)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetNamedRanges(FileName, worksheetName);
-        }
-
-        /// <summary>
-        /// Returns a list of workbook-scope named ranges that the spreadsheet contains
-        /// </summary>
-        public IEnumerable<string> GetNamedRanges()
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetNamedRanges(FileName);
-        }
-
-        /// <summary>
-        /// Returns a list of worksheet-scope named ranges that the worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Name of the worksheet</param>
-        public IEnumerable<string> GetNamedRanges(string worksheetName)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetNamedRanges(FileName, worksheetName);
-        }
-
-        /// <summary>
-        /// Returns a list of workbook-scope named ranges that the spreadsheet contains
-        /// </summary>
-        public IEnumerable<string> GetNamedRanges()
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetNamedRanges(FileName);
-        }
-
-        /// <summary>
-        /// Returns a list of worksheet-scope named ranges that the worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Name of the worksheet</param>
-        public IEnumerable<string> GetNamedRanges(string worksheetName)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetNamedRanges(FileName, worksheetName);
-        }
-
-        /// <summary>
-        /// Returns a list of workbook-scope named ranges that the spreadsheet contains
-        /// </summary>
-        public IEnumerable<string> GetNamedRanges()
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetNamedRanges(FileName);
-        }
-
-        /// <summary>
-        /// Returns a list of worksheet-scope named ranges that the worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Name of the worksheet</param>
-        public IEnumerable<string> GetNamedRanges(string worksheetName)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetNamedRanges(FileName, worksheetName);
-        }
+        
 
         /// <summary>
         /// Returns a list of columns names that a worksheet contains
@@ -326,83 +208,7 @@ namespace LinqToExcel
             return ExcelUtilities.GetColumnNames(worksheetName, namedRange, FileName);
         }
 
-        /// <summary>
-        /// Returns a list of columns names that a worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Worksheet name to get the list of column names from</param>
-        /// <param name="namedRangeName">Named Range name to get the list of column names from</param>
-        public IEnumerable<string> GetColumnNames(string worksheetName, string namedRange)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetColumnNames(worksheetName, namedRange, FileName);
-        }
-
-        /// <summary>
-        /// Returns a list of columns names that a worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Worksheet name to get the list of column names from</param>
-        /// <param name="namedRangeName">Named Range name to get the list of column names from</param>
-        public IEnumerable<string> GetColumnNames(string worksheetName, string namedRange)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetColumnNames(worksheetName, namedRange, FileName);
-        }
-
-        /// <summary>
-        /// Returns a list of columns names that a worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Worksheet name to get the list of column names from</param>
-        /// <param name="namedRangeName">Named Range name to get the list of column names from</param>
-        public IEnumerable<string> GetColumnNames(string worksheetName, string namedRange)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetColumnNames(worksheetName, namedRange, FileName);
-        }
-
-        /// <summary>
-        /// Returns a list of columns names that a worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Worksheet name to get the list of column names from</param>
-        /// <param name="namedRangeName">Named Range name to get the list of column names from</param>
-        public IEnumerable<string> GetColumnNames(string worksheetName, string namedRange)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetColumnNames(worksheetName, namedRange, FileName);
-        }
-
-        /// <summary>
-        /// Returns a list of columns names that a worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Worksheet name to get the list of column names from</param>
-        /// <param name="namedRangeName">Named Range name to get the list of column names from</param>
-        public IEnumerable<string> GetColumnNames(string worksheetName, string namedRange)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetColumnNames(worksheetName, namedRange, FileName);
-        }
-
-        /// <summary>
-        /// Returns a list of columns names that a worksheet contains
-        /// </summary>
-        /// <param name="worksheetName">Worksheet name to get the list of column names from</param>
-        /// <param name="namedRangeName">Named Range name to get the list of column names from</param>
-        public IEnumerable<string> GetColumnNames(string worksheetName, string namedRange)
-        {
-            if (String.IsNullOrEmpty(FileName))
-                throw new NullReferenceException("FileName property is not set");
-
-            return ExcelUtilities.GetColumnNames(worksheetName, namedRange, FileName);
-        }
+     
 
         internal ExcelQueryConstructorArgs GetConstructorArgs()
         {
